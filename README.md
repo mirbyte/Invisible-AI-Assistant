@@ -5,7 +5,7 @@ A Python application that analyzes screenshots using Google's Gemini AI and prov
 - **ALT+Q**: General question answering (types answer)
 - **ALT+C**: Code problem solving (types answer)
 - **ALT+M**: Multiple choice questions (*speaks* answer)
-- **ALT+T**: Detailed text explanation (types answer)
+- **ALT+T**: More detailed text answer (types answer)
 - **ALT+E**: Detailed text explanation (*speaks* answer)
 - **ALT+R**: Repeats last TTS response
 - **ALT+ESC**: Exits application
