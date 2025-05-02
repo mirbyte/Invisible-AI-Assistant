@@ -1,0 +1,8 @@
+keyboard
+pillow
+google-generativeai
+python-dotenv
+gtts
+pygame
+numpy
+colorama
