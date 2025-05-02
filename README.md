@@ -22,6 +22,13 @@ A Python application that analyzes screenshots using Google's Gemini AI and prov
 
 <br>
 
+![env2](https://github.com/user-attachments/assets/b8c3af9e-89f2-4d88-9dac-9ec1b32ce512)
+
+![env](https://github.com/user-attachments/assets/ce2dc7f7-000c-4954-9313-36c98fcf9612)
+
+
+<br>
+
 Inspired by [Cluely AI](https://cluely.com).
 
 <br>
