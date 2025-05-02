@@ -1,6 +1,28 @@
 # Invisible AI Assistant
-Inspired by [Cluely AI](https://cluely.com).
+A Python application that analyzes screenshots using Google's Gemini AI and provides answers via typing or text-to-speech. I recommend to modify the prompts to better fit your own needs.
 
+## Hotkeys
+- **ALT+Q**: General question answering (types answer)
+- **ALT+C**: Code problem solving (types answer)
+- **ALT+M**: Multiple choice questions (*speaks* answer)
+- **ALT+T**: Detailed text explanation (types answer)
+- **ALT+E**: Detailed text explanation (*speaks* answer)
+- **ALT+R**: Repeats last TTS response
+- **ALT+ESC**: Exits application
+
+## Setup
+1. Install dependencies: `pip install -r requirements.txt`
+2. Add your Gemini API key to .env file
+3. Run the application
+
+## Notes
+- Requires internet connection
+- Beep sounds indicate startup and shutdown
+- Warning! Long TextToSpeech answers can take up to 20 seconds to load
+
+<br>
+
+Inspired by [Cluely AI](https://cluely.com).
 
 <br>
 
