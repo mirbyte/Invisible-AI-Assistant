@@ -19,6 +19,7 @@ A Python application that analyzes screenshots using Google's Gemini AI and prov
 - Requires internet connection
 - Beep sounds indicate startup and shutdown
 - Warning! Long TextToSpeech answers can take up to 20 seconds to load
+- To make it actually invisible, change the script extension to .pyw
 
 <br>
 
