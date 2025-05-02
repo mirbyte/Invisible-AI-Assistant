@@ -1,1 +1,1 @@
-# gemini-screenshot-assistant
+# ai screen assistant
