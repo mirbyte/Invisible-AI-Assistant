@@ -1,2 +1,2 @@
-# ai screen assistant
+# AI Screen Assistant
 Inspired by Cluely AI.
