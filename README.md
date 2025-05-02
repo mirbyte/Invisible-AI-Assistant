@@ -12,7 +12,7 @@ A Python application that analyzes screenshots using Google's Gemini AI and prov
 
 ## Setup
 1. Install dependencies: `pip install -r requirements.txt`
-2. Add your Gemini API key to .env file
+2. Create .env file with your Gemini API key
 3. Run the application
 
 ## Notes
