@@ -1,7 +1,7 @@
 # Invisible AI Assistant
 A Python application that analyzes screenshots using Google's Gemini AI and provides answers via typing or text-to-speech. I recommend to modify the prompts to better fit your own needs. If you found this project useful, please drop a ⭐- it means a lot!
 
-## Hotkeys
+## Hotkeys (subject to change)
 - **ALT+Q**: General question answering (types answer)
 - **ALT+C**: Coding problem (types answer)
 - **ALT+M**: Multiple choice questions (*speaks* answer)
