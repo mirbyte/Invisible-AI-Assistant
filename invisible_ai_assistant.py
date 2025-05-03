@@ -14,7 +14,7 @@ import colorama
 from colorama import Fore, Style
 
 
-# Version 1.0.2
+# Version 1.0.3
 
 
 def check_internet_connection():
@@ -45,9 +45,9 @@ HOTKEY_EXPLAIN = 'alt+e'
 REPEAT_HOTKEY = 'alt+r'
 
 # Prompts
-PROMPT_QUESTION = "Analyze this screenshot for a test question and provide a clear, well-structured answer. Don't use code blocks or other special text formatting."
+PROMPT_QUESTION = "Analyze this screenshot for questions and provide a clear, well-structured and thorough answer but don't use special text formatting."
 PROMPT_CODE = "Analyze this screenshot and respond to the code problem visible, type an answer only."
-PROMPT_TRANSLATE = "Translate the foreign language text in this screenshot to english. You can ignore unnessessary information like links. Names don't need translation. DO NOT repeat text that's already in english. Don't use text formatting like * characters."
+PROMPT_TRANSLATE = "Translate the foreign language text in this screenshot to english. Names don't need translation. DO NOT repeat text that's already in english and don't use text formatting like * characters."
 PROMPT_MULTICHOICE = "Analyze this screenshot and respond to the multiple choice question visible with an answer only, no text formatting."
 PROMPT_EXPLAIN = "Analyze the data in this screenshot and provide a clear, concise explanation focusing on key insights and patterns. Avoid code blocks and special formatting."
 
@@ -147,7 +147,7 @@ def take_screenshot_and_analyze(prompt, mode):
         
         # 2. Crop screenshot
         width, height = screenshot.size
-        top_margin = int(height * 0.10)
+        top_margin = int(height * 0.04)
         bottom_margin = int(height * 0.04)
         cropped = screenshot.crop((0, top_margin, width, height-bottom_margin))
         
@@ -183,8 +183,10 @@ def take_screenshot_and_analyze(prompt, mode):
             if cleaned_result:
                 if mode == 'type':
                     print("Typing result...")
-                    time.sleep(0.5) # Small delay
-                    keyboard.write(cleaned_result)
+                    time.sleep(1)
+                    for char in cleaned_result:
+                        keyboard.write(char)
+                        time.sleep(0.05) # Delay between characters
                     print("Finished typing.")
                 elif mode == 'tts':
                     print("Speaking result...")
@@ -208,18 +210,20 @@ def repeat_last_tts():
     """Repeats the last spoken text if available."""
     global last_spoken_response
     print(f"\nHotkey '{REPEAT_HOTKEY}' detected!")
+    speak_text("Repeating last response")
     if last_spoken_response:
         print("Repeating last TTS response...")
         # Re-use the speak_text function which handles threading
         speak_text(last_spoken_response)
     else:
         print("No previous TTS response to repeat.")
+        speak_text("No previous response to repeat")
     print(f"Ready. Listening for hotkeys...")
 
 
-def handle_text():
+def text_translation():
     print(f"\nHotkey '{HOTKEY_TRANSLATE}' detected!")
-    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts') 
+    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts')
 
 
 # --- Main Execution ---
@@ -229,7 +233,7 @@ def play_beep(frequency=440, duration=100):
     sample_rate = 44100
     samples = numpy.array([4096 * numpy.sin(2.0 * numpy.pi * frequency * x / sample_rate) 
                     for x in range(0, sample_rate * duration // 1000)]).astype(numpy.int16)
-    arr = numpy.column_stack((samples, samples))  # Create 2D array for stereo
+    arr = numpy.column_stack((samples, samples)) # 2D array for stereo
     sound = pygame.sndarray.make_sound(arr)
     sound.play()
     time.sleep(duration / 1000)
@@ -249,11 +253,11 @@ def main():
     play_beep(880, 100)
 
     # Register hotkeys with specific prompts
-    keyboard.add_hotkey(HOTKEY_QUESTION, lambda: take_screenshot_and_analyze(PROMPT_QUESTION, 'type'))
-    keyboard.add_hotkey(HOTKEY_CODE, lambda: take_screenshot_and_analyze(PROMPT_CODE, 'type'))
-    keyboard.add_hotkey(HOTKEY_TRANSLATE, handle_text)
-    keyboard.add_hotkey(HOTKEY_MULTICHOICE, lambda: take_screenshot_and_analyze(PROMPT_MULTICHOICE, 'tts'))
-    keyboard.add_hotkey(HOTKEY_EXPLAIN, lambda: take_screenshot_and_analyze(PROMPT_EXPLAIN, 'tts'))
+    keyboard.add_hotkey(HOTKEY_QUESTION, lambda: (speak_text("Question mode loading"), take_screenshot_and_analyze(PROMPT_QUESTION, 'type')))
+    keyboard.add_hotkey(HOTKEY_CODE, lambda: (speak_text("Code mode loading"), take_screenshot_and_analyze(PROMPT_CODE, 'type')))
+    keyboard.add_hotkey(HOTKEY_TRANSLATE, lambda: (speak_text("Translating"), take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts')))
+    keyboard.add_hotkey(HOTKEY_MULTICHOICE, lambda: (speak_text("Multiple choice mode loading"), take_screenshot_and_analyze(PROMPT_MULTICHOICE, 'tts')))
+    keyboard.add_hotkey(HOTKEY_EXPLAIN, lambda: (speak_text("Explanation mode loading"), take_screenshot_and_analyze(PROMPT_EXPLAIN, 'tts')))
     keyboard.add_hotkey(REPEAT_HOTKEY, repeat_last_tts)
 
 
