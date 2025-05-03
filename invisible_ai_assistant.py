@@ -213,7 +213,7 @@ def repeat_last_tts():
 
 def handle_text():
     print(f"\nHotkey '{HOTKEY_TRANSLATE}' detected!")
-    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts') # Use TTS for translation output
+    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts')
 
 
 # --- Main Execution ---
