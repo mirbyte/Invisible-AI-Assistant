@@ -14,12 +14,7 @@ import colorama
 from colorama import Fore, Style
 
 
-# Version 1.0.0 release
-
-
-# Initialize colorama
-colorama.init()
-os.system("title github.com/mirbyte")
+# Version 1.0.1
 
 
 def check_internet_connection():
@@ -37,26 +32,28 @@ def check_internet_connection():
 
 
 # --- Configuration ---
+colorama.init()
+os.system("title github.com/mirbyte")
 load_dotenv()
 
 # Hotkeys
 HOTKEY_QUESTION = 'alt+q'
 HOTKEY_CODE = 'alt+c'
-HOTKEY_TEXT = 'alt+t'
+HOTKEY_TRANSLATE = 'alt+t'
 HOTKEY_MULTICHOICE = 'alt+m'
 HOTKEY_EXPLAIN = 'alt+e'
 REPEAT_HOTKEY = 'alt+r'
 
 
 # Prompts
-PROMPT_QUESTION = "Analyze this screenshot and give me short and clear answers to the test questions visible. Respond in english with an answer only."
+PROMPT_QUESTION = "Analyze this screenshot for a test question and provide a clear, well-structured answer. Don't use code blocks or other special text formatting."
 PROMPT_CODE = "Analyze this screenshot and respond to the code problem visible, type an answer only."
-PROMPT_TEXT = "Analyze this screenshot for a test question and provide a clear, well-structured answer."
+PROMPT_TRANSLATE = "Translate the text of the main context in this screenshot to English. You can ignore unnessessary information like links. Names don't need translation and don't repeat text that's already in english. Don't use text formatting like * characters."
 PROMPT_MULTICHOICE = "Analyze this screenshot and respond to the multiple choice question visible with an answer only, no text formatting."
-PROMPT_EXPLAIN = "Analyze this screenshot and explain the data visible in a short and concise way. Don't use any code blocks or other special text formatting."
+PROMPT_EXPLAIN = "Analyze the data in this screenshot and provide a clear, concise explanation focusing on key insights and patterns. Avoid code blocks and special formatting."
 
 # Global variables
-last_tts_response = None
+last_spoken_response = None
 
 
 # --- API Setup ---
@@ -66,7 +63,7 @@ while not check_internet_connection():
 try:
     gemini_api_key = os.getenv("GOOGLE_API_KEY")
     if not gemini_api_key:
-        raise ValueError("GOOGLE_API_KEY not found in .env file or environment variables.")
+        raise ValueError("GOOGLE_API_KEY not found in .env file.")
     genai.configure(api_key=gemini_api_key)
     gemini_model = genai.GenerativeModel('gemini-2.0-flash')
     print("Gemini API configured successfully.")
@@ -116,11 +113,11 @@ def _speak_worker_gtts(text_to_speak):
 
 def speak_text(text_to_speak):
     """Starts a separate thread to generate and play speech using gTTS and pygame."""
-    global last_tts_response
+    global last_spoken_response
     if not text_to_speak:
         print("Speak Text: No text provided.")
         return
-    last_tts_response = text_to_speak
+    last_spoken_response = text_to_speak
     thread = threading.Thread(target=_speak_worker_gtts, args=(text_to_speak,))
     thread.daemon = True
     thread.start()
@@ -203,20 +200,20 @@ def take_screenshot_and_analyze(prompt, mode):
 # --- Hotkey Functions ---
 def repeat_last_tts():
     """Repeats the last spoken text if available."""
-    global last_tts_response
+    global last_spoken_response
     print(f"\nHotkey '{REPEAT_HOTKEY}' detected!")
-    if last_tts_response:
+    if last_spoken_response:
         print("Repeating last TTS response...")
         # Re-use the speak_text function which handles threading
-        speak_text(last_tts_response)
+        speak_text(last_spoken_response)
     else:
         print("No previous TTS response to repeat.")
     print(f"Ready. Listening for hotkeys...")
 
 
 def handle_text():
-    print(f"\nHotkey '{HOTKEY_TEXT}' detected!")
-    take_screenshot_and_analyze(PROMPT_TEXT, 'type')
+    print(f"\nHotkey '{HOTKEY_TRANSLATE}' detected!")
+    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts') # Use TTS for translation output
 
 
 # --- Main Execution ---
@@ -248,7 +245,7 @@ def main():
     # Register hotkeys with specific prompts
     keyboard.add_hotkey(HOTKEY_QUESTION, lambda: take_screenshot_and_analyze(PROMPT_QUESTION, 'type'))
     keyboard.add_hotkey(HOTKEY_CODE, lambda: take_screenshot_and_analyze(PROMPT_CODE, 'type'))
-    keyboard.add_hotkey(HOTKEY_TEXT, handle_text)
+    keyboard.add_hotkey(HOTKEY_TRANSLATE, handle_text)
     keyboard.add_hotkey(HOTKEY_MULTICHOICE, lambda: take_screenshot_and_analyze(PROMPT_MULTICHOICE, 'tts'))
     keyboard.add_hotkey(HOTKEY_EXPLAIN, lambda: take_screenshot_and_analyze(PROMPT_EXPLAIN, 'tts'))
     keyboard.add_hotkey(REPEAT_HOTKEY, repeat_last_tts)
@@ -258,7 +255,7 @@ def main():
     print(f"Script started. Listening for hotkeys:")
     print(f" - General Question (Type): {Fore.CYAN}{HOTKEY_QUESTION}{Style.RESET_ALL}")
     print(f" - Coding Question (Type): {Fore.CYAN}{HOTKEY_CODE}{Style.RESET_ALL}")
-    print(f" - Text Answer (Type): {Fore.CYAN}{HOTKEY_TEXT}{Style.RESET_ALL}")
+    print(f" - Translate (TTS): {Fore.CYAN}{HOTKEY_TRANSLATE}{Style.RESET_ALL}")
     print(f" - Multiple Choice (TTS): {Fore.CYAN}{HOTKEY_MULTICHOICE}{Style.RESET_ALL}")
     print(f" - Explanation (TTS): {Fore.CYAN}{HOTKEY_EXPLAIN}{Style.RESET_ALL}")
     print(f" - Repeat Last TTS Answer: {Fore.CYAN}{REPEAT_HOTKEY}{Style.RESET_ALL}")
