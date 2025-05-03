@@ -14,7 +14,7 @@ import colorama
 from colorama import Fore, Style
 
 
-# Version 1.0 release
+# Version 1.0.0 release
 
 
 # Initialize colorama
