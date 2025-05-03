@@ -1,0 +1,10 @@
+v1.0.2
+- slight cropping to screenshots
+- prompt updates
+
+v1.0.1
+- translation TTS
+- prompt updates
+
+v1.0.0
+- initial release
