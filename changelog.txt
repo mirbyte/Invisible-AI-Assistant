@@ -1,3 +1,8 @@
+v1.0.3
+- hotkey feedback added
+- added small delay for typing
+- prompt updates
+
 v1.0.2
 - slight cropping to screenshots
 - prompt updates
