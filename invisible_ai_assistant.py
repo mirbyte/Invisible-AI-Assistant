@@ -14,7 +14,7 @@ import colorama
 from colorama import Fore, Style
 
 
-# Version 1.0.1
+# Version 1.0.2
 
 
 def check_internet_connection():
@@ -44,11 +44,10 @@ HOTKEY_MULTICHOICE = 'alt+m'
 HOTKEY_EXPLAIN = 'alt+e'
 REPEAT_HOTKEY = 'alt+r'
 
-
 # Prompts
 PROMPT_QUESTION = "Analyze this screenshot for a test question and provide a clear, well-structured answer. Don't use code blocks or other special text formatting."
 PROMPT_CODE = "Analyze this screenshot and respond to the code problem visible, type an answer only."
-PROMPT_TRANSLATE = "Translate the text of the main context in this screenshot to English. You can ignore unnessessary information like links. Names don't need translation and don't repeat text that's already in english. Don't use text formatting like * characters."
+PROMPT_TRANSLATE = "Translate the foreign language text in this screenshot to english. You can ignore unnessessary information like links. Names don't need translation. DO NOT repeat text that's already in english. Don't use text formatting like * characters."
 PROMPT_MULTICHOICE = "Analyze this screenshot and respond to the multiple choice question visible with an answer only, no text formatting."
 PROMPT_EXPLAIN = "Analyze the data in this screenshot and provide a clear, concise explanation focusing on key insights and patterns. Avoid code blocks and special formatting."
 
@@ -134,9 +133,9 @@ def analyze_image_gemini(image, prompt):
         return response.text
     except Exception as e:
         try:
-             print(f"Prompt Feedback: {response.prompt_feedback}")
+            print(f"Prompt Feedback: {response.prompt_feedback}")
         except Exception:
-             pass
+            pass
         return f"Gemini API error: {e}"
 
 def take_screenshot_and_analyze(prompt, mode):
@@ -145,15 +144,22 @@ def take_screenshot_and_analyze(prompt, mode):
     try:
         # 1. Take Screenshot
         screenshot = ImageGrab.grab()
+        
+        # 2. Crop screenshot
+        width, height = screenshot.size
+        top_margin = int(height * 0.10)
+        bottom_margin = int(height * 0.04)
+        cropped = screenshot.crop((0, top_margin, width, height-bottom_margin))
+        
         # Save screenshot for debugging
         try:
             save_path = "debug_screenshot.png"
-            screenshot.save(save_path)
+            cropped.save(save_path)
         except Exception as save_e:
             print(f"Error saving screenshot: {save_e}")
 
-        # 2. Analyze Screenshot using Gemini
-        result = analyze_image_gemini(screenshot, prompt)
+        # 3. Analyze Screenshot using Gemini
+        result = analyze_image_gemini(cropped, prompt)
 
         # 3. Show Result (Print)
         print("\n--- Gemini Analysis Result ---")
@@ -187,7 +193,7 @@ def take_screenshot_and_analyze(prompt, mode):
                 else:
                     print(f"Unknown output mode: {mode}")
             else:
-                 print("Result was empty after cleaning.")
+                print("Result was empty after cleaning.")
         else:
             print("No valid text result to process.")
         print(f"Ready. Listening for hotkeys...")
@@ -213,7 +219,7 @@ def repeat_last_tts():
 
 def handle_text():
     print(f"\nHotkey '{HOTKEY_TRANSLATE}' detected!")
-    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts')
+    take_screenshot_and_analyze(PROMPT_TRANSLATE, 'tts') 
 
 
 # --- Main Execution ---
@@ -222,7 +228,7 @@ def play_beep(frequency=440, duration=100):
     pygame.mixer.init()
     sample_rate = 44100
     samples = numpy.array([4096 * numpy.sin(2.0 * numpy.pi * frequency * x / sample_rate) 
-                      for x in range(0, sample_rate * duration // 1000)]).astype(numpy.int16)
+                    for x in range(0, sample_rate * duration // 1000)]).astype(numpy.int16)
     arr = numpy.column_stack((samples, samples))  # Create 2D array for stereo
     sound = pygame.sndarray.make_sound(arr)
     sound.play()
