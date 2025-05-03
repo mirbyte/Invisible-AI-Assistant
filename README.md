@@ -3,7 +3,7 @@ A Python application that analyzes screenshots using Google's Gemini AI and prov
 
 ## Hotkeys (subject to change)
 - **ALT+Q**: General question answering (types answer)
-- **ALT+C**: Coding problem (types answer)
+- **ALT+C**: Code completion question (types answer)
 - **ALT+M**: Multiple choice questions (*speaks* answer)
 - **ALT+T**: Translation to english (*speaks* answer)
 - **ALT+E**: Detailed text explanation (*speaks* answer)
