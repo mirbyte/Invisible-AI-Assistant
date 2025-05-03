@@ -2,7 +2,7 @@
 A Python application that analyzes screenshots using Google's Gemini AI and provides answers via typing or text-to-speech. I recommend to modify the prompts to better fit your own needs. If you found this project useful, please drop a ⭐- it means a lot!
 
 ## Hotkeys
-- **ALT+Q**: General question answering (types answer)
+- **ALT+Q**: General question (types answer)
 - **ALT+C**: Code completion question (types answer)
 - **ALT+M**: Multiple choice question (*speaks* answer)
 - **ALT+T**: Translation to english (*speaks* answer)
