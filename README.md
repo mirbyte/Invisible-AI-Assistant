@@ -1,5 +1,4 @@
 [![License](https://gradgen.boris.sh/github/license/mirbyte/Invisible-AI-Assistant?gradient=666699,3333cc,0033cc,000066,000033)](https://raw.githubusercontent.com/mirbyte/Invisible-AI-Assistant/master/LICENSE)
-![Size](https://gradgen.boris.sh/github/size/mirbyte/Invisible-AI-Assistant?label=size&gradient=666699,3333cc,0033cc,000066,000033)
 ![LastCommit](https://gradgen.boris.sh/github/last-commit/mirbyte/Invisible-AI-Assistant?label=repo%20updated&gradient=666699,3333cc,0033cc,000066,000033)
 
 
